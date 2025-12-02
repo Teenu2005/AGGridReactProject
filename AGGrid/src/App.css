@@ -1,0 +1,9 @@
+body{
+    width: 98%;
+    height: 100%;
+}
+.gridContanier{
+    margin: auto;
+    width:100%;
+    height:550px;
+}

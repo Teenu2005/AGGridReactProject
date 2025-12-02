@@ -1,0 +1,25 @@
+/* custom-ag-grid.css */
+
+/* [class^="ag-theme-params"]  {
+  --ag-header-background-color: #16b2d19d;
+  --ag-header-foreground-color: green; 
+
+  --ag-row-hover-color: #e5edff;
+  --ag-selected-row-background-color: #c7d2fe;
+
+  --ag-font-size: 1em;
+
+  --ag-row-height: 3em; 
+  --ag-header-height: 3.5em;
+  --ag-list-item-height:1em;
+} */
+.btn{
+  padding: .5em;
+  margin: .5em;
+  border-radius: 20px;
+  border: 0px;
+  background: grey;
+}
+.btn :hover{
+  cursor: all-scroll;
+}
