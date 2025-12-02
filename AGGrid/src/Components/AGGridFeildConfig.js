@@ -1,5 +1,4 @@
 import {data} from '../Db/data'
-// import {fetchStudentData} from '../Service/Api'
 
 export const columnDefs = [
     {
@@ -38,10 +37,6 @@ export const gridOptions = {
     checkboxes: true,  
     headerCheckbox: true 
   },
-//   onGridReady: function (params) {
-//   gridOptions.api = params.api;
-//   fetchStudentData();
-// }
 };
 
 export  const rowData =data;
