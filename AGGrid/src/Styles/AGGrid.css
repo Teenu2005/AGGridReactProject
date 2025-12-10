@@ -14,11 +14,16 @@
   --ag-list-item-height:1em;
 } */
 .btn{
-  padding: .5em;
+  padding: 1em;
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: .5em;
   border-radius: 20px;
   border: 0px;
-  background: grey;
+  background: rgba(12, 72, 77, 0.616);
+  color: white;
+}
+.btn :hover{
+  background: rgba(3, 248, 142, 0.856);
 }
 .btn :hover{
   cursor: all-scroll;

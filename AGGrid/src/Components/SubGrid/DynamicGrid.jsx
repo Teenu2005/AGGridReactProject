@@ -2,6 +2,7 @@ import { AgGridReact } from "ag-grid-react";
 import { useEffect, useState,useMemo } from "react";
 import { gridOptions, addRow, deleteSelected } from './DynamicGridConfig';
 import { loadGrid } from "../../Service/Api";
+import { myTheme } from "../../Styles/them";
 export default function DynamicGrid() {
   const [columnDefs, setColumnDefs] = useState([]);
   const [rowData, setRowData] = useState([]);
@@ -10,6 +11,7 @@ export default function DynamicGrid() {
     const defaultColDef = useMemo(() => ({
       filter: true,
       editable: (params) => params.colDef.field !== "id",
+      
     }), []);
 
     useEffect(()=>{ThemChange();},[]);
@@ -31,6 +33,7 @@ export default function DynamicGrid() {
     <div className="gridContanier" style={{ height: 500 }}>
         <button className='btn' onClick={ThemChange}>{Theme?"Dark":"Light"}</button>
       <AgGridReact
+        theme={myTheme}
         columnDefs={columnDefs}
         rowData={rowData}
         gridOptions={gridOptions}

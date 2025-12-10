@@ -40,7 +40,7 @@ const LightThem ={
   //Rows
   rowHoverColor: "#e0e7ff",          
   selectedRowBackgroundColor: "#c7d2fe", 
-  oddRowBackgroundColor: "#ffffff",
+  oddRowBackgroundColor: "#cbecec33",
 
   //Grid Lines
   borderColor: "#e5e7eb",

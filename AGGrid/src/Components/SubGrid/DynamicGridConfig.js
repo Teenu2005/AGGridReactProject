@@ -1,15 +1,19 @@
 
 export const gridOptions = {
-  rowSelection: "multiple",
-  pagination: true,
-  paginationPageSize: 10,
-  paginationPageSizeSelector: [10, 20, 30],
+  // pagination: true,
+  // paginationPageSize: 10,
+  // paginationPageSizeSelector: [10, 20, 30],
   rowSelection: {
     mode: "multiRow",   
     checkboxes: true,  
     headerCheckbox: true
   },
+  rowDragMultiRow: true,
+  rowDragEntireRow: true,
+  rowDragManaged: true,   
+  animateRows: true,     
   onGridReady: function (params) {
+    console.log(params)
     gridOptions.api = params.api;
   },
 
@@ -28,7 +32,6 @@ export function addRow(totalRows) {
     phone: "9999999999",
     address_city: "Chennai"
   };
-
   gridOptions.api.applyTransaction(
     { add: [newRow] },
     (res) => {
