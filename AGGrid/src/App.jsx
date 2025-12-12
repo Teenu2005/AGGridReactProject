@@ -8,8 +8,8 @@ function App() {
     <>
     <BrowserRouter>
     <Routes>
-      <Route path="/dynamic-grid" element={<DynamicGrid />} />
-      <Route path="/" element={<AGGrid />} />
+      <Route path="/grid" element={<AGGrid />} />
+      <Route path="/" element={<DynamicGrid />} />
     </Routes>
     </BrowserRouter>
     </>

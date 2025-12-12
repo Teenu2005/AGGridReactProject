@@ -1,141 +1,139 @@
 /* 
-   AG GRID v34+ COMPLETE THEME CANVAS
-   Apply this with: theme={themeQuartz}
-*/
+import { AgGridReact } from "ag-grid-react";
+import { useEffect, useState, useMemo, useRef } from "react";
+import { loadGrid } from "../../Service/Api";
+import { myTheme } from "../../Styles/them";
 
-.ag-theme-quartz {
+export default function DynamicGrid() {
+  const [columnDefs, setColumnDefs] = useState([]);
+  const [rowData, setRowData] = useState([]);
+  const [editable, setEditable] = useState(false);
+  const [theme, setTheme] = useState(false);
+  const [grouped, setGrouped] = useState(false);
 
-  
-     /* RE TYPOGRAPHY & BORDERS */
-  --ag-font-family: Inter, system-ui, sans-serif;
-  --ag-font-size: 14px;
-  --ag-font-weight: 400;
-  --ag-line-height: 1.4;
+  const gridRef = useRef(); // Ref to AG Grid instance
 
-  --ag-border-radius: 6px;
-  --ag-wrapper-border-radius: 8px;
-  --ag-border-color: #e5e7eb;
+  // Default column definition
+  const defaultColDef = useMemo(
+    () => ({
+      filter: true,
+      sortable: true,
+      editable: (params) => editable && params.colDef.field !== "id",
+      resizable: true,
+    }),
+    [editable]
+  );
 
+  // Load columns and data from API
+  useEffect(() => {
+    async function fetchData() {
+      const { dynamicColumns, data } = await loadGrid();
+      setColumnDefs([...dynamicColumns]);
+      setRowData([...data]);
+    }
+    fetchData();
+  }, []);
 
-  
-     /* ROW & HEADER SIZING */
-  --ag-row-height: 42px;
-  --ag-header-height: 48px;
-  --ag-list-item-height: 32px;
+  // Toggle theme
+  const handleThemeChange = () => {
+    setTheme((prev) => {
+      const newTheme = !prev;
+      document.body.dataset.agThemeMode = newTheme ? "dark" : "light";
+      return newTheme;
+    });
+  };
 
-  --ag-row-border-width: 1px;
-  --ag-row-border-color: #e5e7eb;
+  // Toggle editable mode
+  const toggleEditable = () => {
+    setEditable((prev) => !prev);
+    setColumnDefs((prev) => [...prev]); // Force AG Grid to refresh defaultColDef
+  };
 
+  // Add a new row
+  const addRow = () => {
+    const newRow = {
+      id: rowData.length + 1,
+      name: "New Student",
+      username: "newuser",
+      email: "new@gmail.com",
+      phone: "9999999999",
+      address_city: "Chennai",
+    };
+    setRowData((prev) => [...prev, newRow]);
 
-  
-     /* GRID / ROW BACKGROUNDS */
-  --ag-background-color: #ffffff;
-  --ag-foreground-color: #111827;
+    // Start editing the new row
+    setTimeout(() => {
+      gridRef.current.api.startEditingCell({
+        rowIndex: rowData.length,
+        colKey: "name",
+      });
+    }, 0);
+  };
 
-  --ag-row-hover-color: #f3f4f6;
-  --ag-selected-row-background-color: #dbeafe;
-  --ag-range-selection-background-color: #bfdbfe;
+  // Delete selected rows
+  const deleteSelected = () => {
+    const selectedNodes = gridRef.current.api.getSelectedNodes();
+    if (!selectedNodes.length) {
+      alert("Please select at least one row to delete.");
+      return;
+    }
+    const selectedIds = selectedNodes.map((node) => node.data.id);
+    setRowData((prev) => prev.filter((row) => !selectedIds.includes(row.id)));
+  };
 
-  --ag-odd-row-background-color: #ffffff;
-  --ag-even-row-background-color: #f9fafb;
+  // Toggle row grouping by 'company'
+  const toggleRowGroup = () => {
+    const api = gridRef.current.api;
+    const columnApi = gridRef.current.columnApi;
+    if (!grouped) {
+      api.setRowGroupColumns(["company"]);
+      api.updateGridOptions((op)=>{op.sideBar = 'columns'});
+      console.log(api, columnApi);
+    } else {
+      api.setRowGroupColumns([]);
+    }
 
+    setGrouped((prev) => !prev);
+  };
 
-  
-     /* HEADER STYLING */
-  --ag-header-background-color: #0f172a;
-  --ag-header-foreground-color: #ffffff;
-  --ag-header-border-color: #334155;
+  return (
+    <div className="gridContainer" style={{ height: 600, width: "100%" }}>
+      <div className="toolbar" style={{ marginBottom: 10 }}>
+        <button className="btn" onClick={handleThemeChange}>
+          {theme ? "Dark" : "Light"}
+        </button>
+        <button className="btn" onClick={toggleEditable}>
+          {editable ? "Disable Editing" : "Enable Editing"}
+        </button>
+        <button className="btn" onClick={addRow}>
+          Add Row
+        </button>
+        <button className="btn" onClick={deleteSelected}>
+          Delete Selected
+        </button>
+        <button className="btn" onClick={toggleRowGroup}>
+          {grouped ? "Ungroup" : "Group Rows"}
+        </button>
+      </div>
 
-  --ag-header-cell-hover-background-color: #1e293b;
-  --ag-header-cell-moving-background-color: #020617;
+      <div className="ag-theme-alpine" style={{ height: 500, width: "100%" }}>
+        <AgGridReact
+          ref={gridRef}
+          theme={myTheme}
+          columnDefs={columnDefs}
+          rowData={rowData}
+          defaultColDef={defaultColDef}
+          rowSelection="multiple"
+          animateRows={true}
+          pagination={true}
+          paginationPageSize={10}
+          onCellValueChanged={(params) => {
+            console.log("Updated Row:", params.data);
+          }}
+        />
+      </div>
+    </div>
+  );
+} */
 
-  --ag-header-column-resize-handle-color: #38bdf8;
-
-
-  
-     /* CELL STYLING */
-  --ag-cell-horizontal-padding: 12px;
-  --ag-cell-vertical-padding: 8px;
-
-  --ag-cell-horizontal-border: 1px solid #e5e7eb;
-  --ag-cell-vertical-border: 1px solid #e5e7eb;
-
-  --ag-cell-focus-border-color: #60a5fa;
-  --ag-cell-range-border-color: #3b82f6;
-
-
-  
-     /* CHECKBOXES & SELECTION */
-  --ag-checkbox-background-color: #ffffff;
-  --ag-checkbox-border-color: #9ca3af;
-  --ag-checkbox-border-radius: 4px;
-
-  --ag-checkbox-checked-color: #2563eb;
-  --ag-checkbox-unchecked-color: #ffffff;
-  --ag-checkbox-indeterminate-color: #f59e0b;
-
-
-  
-     /* SCROLLBARS */
-  --ag-scrollbar-thumb-color: #9ca3af;
-  --ag-scrollbar-track-color: #f3f4f6;
-  --ag-scrollbar-width: 12px;
-
-
-  
-     /* FILTERS & INPUTS */
-  --ag-input-background-color: #ffffff;
-  --ag-input-border-color: #d1d5db;
-  --ag-input-focus-border-color: #2563eb;
-
-  --ag-input-disabled-background-color: #f9fafb;
-  --ag-input-disabled-foreground-color: #9ca3af;
-
-
-  
-     /* ICONS (SORT, FILTER, MENU) */
-  --ag-icon-color: #1f2933;
-  --ag-icon-size: 16px;
-
-
-  
-     /* PAGINATION PANEL */
-  --ag-pagination-button-color: #2563eb;
-  --ag-pagination-button-background-color: #ffffff;
-  --ag-pagination-button-hover-background-color: #e0f2fe;
-  --ag-pagination-button-disabled-color: #9ca3af;
-
-
-  
-     /*  TOOLTIPS & OVERLAYS */
-  --ag-tooltip-background-color: #020617;
-  --ag-tooltip-text-color: #ffffff;
-  --ag-tooltip-border-color: #334155;
-
-  --ag-overlay-background-color: rgba(15, 23, 42, 0.8);
-  --ag-overlay-text-color: #ffffff;
-
-
-  
-     /*  STATUS BAR */
-  --ag-status-bar-background-color: #f3f4f6;
-  --ag-status-bar-foreground-color: #111827;
-  --ag-status-bar-border-color: #e5e7eb;
-
-
-  
-     /*  DRAG & DROP UI */
-  --ag-row-drag-color: #3b82f6;
-  --ag-row-drag-border-color: #2563eb;
-  --ag-column-drag-background-color: #dbeafe;
-
-
-  
-     /*  AG CHART COLORS (If Used) */
-  --ag-chart-background-color: #ffffff;
-  --ag-chart-axis-color: #374151;
-  --ag-chart-label-color: #111827;
-  --ag-chart-tooltip-background-color: #020617;
-  --ag-chart-tooltip-text-color: #ffffff;
-}
 
