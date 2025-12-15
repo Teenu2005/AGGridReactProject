@@ -36,15 +36,11 @@ export const gridOptions = {
     // rowGroupPanelShow: 'always',
 };
 
-export function addRow(totalRows) {
-  const newRow = {
-    id: totalRows + 1,
-    name: "New Student",
-    username: "newuser",
-    email: "new@gmail.com",
-    phone: "9999999999",
-    address_city: "Chennai"
-  };
+export function addRow(totalRows,colDef) {
+  const newRow = {};
+  colDef.forEach(column => {
+    newRow[column.field] = "zzz...";
+  });
   gridOptions.api.applyTransaction(
     { add: [newRow] },
     (res) => {
@@ -81,6 +77,9 @@ export function groupRow(colDef,selectedColumns) {
       rowGroupPanelShow: "never",
       sideBar: false,
     });
+    colDef.forEach(column => {
+    gridOptions.api.applyColumnState({ state: [{ colId:column.field, enableRowGroup: false, rowGroup: false }] });
+  });
     editTable = true;
     return colDef;
   }
@@ -90,7 +89,7 @@ export function groupRow(colDef,selectedColumns) {
       gridOptions.api.applyColumnState({ state: [{ colId:element, rowGroup: true, enableRowGroup: true }] });
     });
     colDef.forEach(column => {
-    gridOptions.api.applyColumnState({ state: [{ colId:column.field, enableRowGroup: true }] });
+    gridOptions.api.applyColumnState({ state: [{ colId:column.field, enableRowGroup: true, pivot: true }] });
   });
     gridOptions.api.updateGridOptions({
       rowGroupPanelShow: "never",
@@ -108,3 +107,7 @@ export const exportCSV = () => {
     columnSeparator: ",",
   });
 };
+
+export const refresGrid=()=>{
+  return gridOptions.api.getState();
+}

@@ -1,8 +1,11 @@
 import { AgGridReact } from "ag-grid-react";
-import { useEffect, useState, useMemo, useRef } from "react";
-import { gridOptions, addRow, deleteSelected, groupRow, getColumData, exportCSV } from './DynamicGridConfig';
+import { useEffect, useState, useMemo, useCallback } from "react";
+import { gridOptions, addRow, deleteSelected, groupRow, getColumData, exportCSV, refresGrid } from './DynamicGridConfig';
 import { loadGrid } from "../../Service/Api";
 import { myTheme } from "../../Styles/them";
+import StateTable from "./StateTable";
+import { AG_GRID_LOCALE_DE, 	AG_GRID_LOCALE_HK } from '@ag-grid-community/locale';
+
 export default function DynamicGrid() {
   const [selectedColumns, setSelectedColumns] = useState([]);
   const [columnDefs, setColumnDefs] = useState([]);
@@ -11,6 +14,7 @@ export default function DynamicGrid() {
   const [Editable, setEditable] = useState(false);
   const [Theme, setTheme] = useState(false);
   const [open, setOpen] = useState(false);
+  const [state, setState] = useState({});
   const defaultColDef = useMemo(() => ({
     filter: true,
     editable: (params) => Editable && params.colDef.field !== "id",
@@ -23,6 +27,20 @@ export default function DynamicGrid() {
     setTheme(Theme ? false : true);
     document.body.dataset.agThemeMode = Theme ? "dark" : "light";
   }
+
+  //column sizing
+  const autoSizeStrategy = useMemo(() => { 
+	return {
+        type: 'fitGridWidth',
+        defaultMinWidth: 100,
+        columnLimits: [
+            {
+                colId: 'country',
+                minWidth: 900
+            }
+        ]
+    };
+}, []);
 
   useEffect(() => {
     async function fetchData() {
@@ -53,7 +71,11 @@ const handleOptionClick = (value) => {
 
   setSelectedColumns(updated);
 };
-
+  //Getting state
+  const getState = () => {
+    setState(refresGrid());
+    console.log(state);
+  }
   return (
     <div className="">
 
@@ -62,6 +84,7 @@ const handleOptionClick = (value) => {
     <button className='btn' onClick={ThemChange}>
       {Theme ? "Dark" : "Light"}
     </button>
+    <button onClick={getState}>Get State</button>
 
     <button className='btn' onClick={exportCSV}>
       Export csv
@@ -116,7 +139,7 @@ const handleOptionClick = (value) => {
 
     {/* RIGHT ACTION BUTTONS */}
     <div className="right-actions">
-      <button className="btn" onClick={() => addRow(rowData.length)}>
+      <button className="btn" onClick={() => addRow(rowData.length,columnDefs)}>
         Add Row
       </button>
       <button className="btn" onClick={deleteSelected}>
@@ -137,9 +160,17 @@ const handleOptionClick = (value) => {
       rowData={rowData}
       gridOptions={gridopt}
       defaultColDef={defaultColDef}
+      theme={myTheme}
+      cellSelection={true}
+      // popupParent={popupParent}
+      enableCharts={true}
+      // localeText={AG_GRID_LOCALE_DE}
+      // localeText={lang}
+      autoSizeStrategy={autoSizeStrategy}
     />
   </div>
-
+  <div><StateTable state={state} />
+</div>
 </div>
 
   );

@@ -1,11 +1,13 @@
  import { ApiData } from "../Db/data";
  
  export async function loadGrid() {
-    const response = await fetch("https://json-placeholder.mock.beeceptor.com/users");
+    // const response = await fetch("https://www.ag-grid.com/example-assets/wide-spread-of-sports.json");
+    const response = await fetch("https://www.ag-grid.com/example-assets/olympic-winners.json");
+    // const response = await fetch("https://json-placeholder.mock.beeceptor.com/users");
     // const response = await fetch("https://jsonplaceholder.typicode.com/users");
 
-    // const data = await response.json();
-    const data = ApiData;
+    const data = await response.json();
+    // const data = ApiData;
 
     const dynamicColumns = Object.keys(data[0]).map(key => ({
       field: key,

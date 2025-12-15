@@ -1,8 +1,10 @@
 import {data} from '../Db/data'
+import { cellComp,cellimg } from './AGGrid';
 
 export const columnDefs = [
     {
         field: "id",
+        cellRenderer: cellComp
     },
     {
         field: "name",
@@ -24,7 +26,8 @@ export const columnDefs = [
         field: "supplier"
     },
     {
-        field: "status"
+        field: "status",
+        cellRenderer: cellimg
     },
     {
         field: "createdDate"

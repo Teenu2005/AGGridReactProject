@@ -1,7 +1,8 @@
 import React, { useEffect, useMemo,useState } from 'react';
 import { AgGridReact } from "ag-grid-react";
 import { myTheme } from "../Styles/them";
-// import { themeQuartz } from "ag-grid-community";
+import Available from '../../public/Avalible.jpeg';
+import Low from '../../public/LowStock.png';
 import '../Styles/AGGrid.css';
 import { columnDefs, rowData, gridOptions } from './AGGridFeildConfig';
 function AGGrid() {
@@ -34,3 +35,16 @@ function AGGrid() {
 }
 
 export default AGGrid;
+
+export function cellComp(params) {
+    return <span>${params.value}</span>;
+}
+export function cellimg(params) {
+    const imgSrc = params.value==="Available"?Available:Low;
+    return(
+    <div className='cellRender'>
+    <img src={imgSrc} width='40px' height='40px' alt={params.value}/>
+    <p>{params.value}</p>
+    </div>
+    );
+}

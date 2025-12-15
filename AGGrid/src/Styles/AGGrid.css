@@ -1,3 +1,6 @@
+
+
+
 /* MAIN CONTAINER */
 .gridContanier {
   padding: 20px;
@@ -116,4 +119,14 @@
 
 .arrow {
   font-size: 12px;
+}
+
+
+.cellRender{
+  display:flex;
+  align-items: center;
+  gap:5px;
+}
+p{
+  margin:0;
 }
