@@ -89,7 +89,12 @@ export function groupRow(colDef,selectedColumns) {
       gridOptions.api.applyColumnState({ state: [{ colId:element, rowGroup: true, enableRowGroup: true }] });
     });
     colDef.forEach(column => {
-    gridOptions.api.applyColumnState({ state: [{ colId:column.field, enableRowGroup: true, pivot: true }] });
+    gridOptions.api.applyColumnState({ state: [{ colId:column.field, enableRowGroup: true}] });
+
+      gridOptions.api.applyColumnState({ state: [{ colId:'gold', aggFunc: "sum" }] });
+      gridOptions.api.applyColumnState({ state: [{ colId:'silver', aggFunc: "sum" }] });
+      gridOptions.api.applyColumnState({ state: [{ colId:'Bronze', aggFunc: "sum" }] });
+      gridOptions.api.applyColumnState({ state: [{ colId:'total', aggFunc: "sum" }] });
   });
     gridOptions.api.updateGridOptions({
       rowGroupPanelShow: "never",
@@ -111,3 +116,6 @@ export const exportCSV = () => {
 export const refresGrid=()=>{
   return gridOptions.api.getState();
 }
+
+
+

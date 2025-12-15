@@ -5,6 +5,7 @@ import { loadGrid } from "../../Service/Api";
 import { myTheme } from "../../Styles/them";
 import StateTable from "./StateTable";
 import { AG_GRID_LOCALE_DE, 	AG_GRID_LOCALE_HK } from '@ag-grid-community/locale';
+import '../../Styles/AGGrid.css';
 
 export default function DynamicGrid() {
   const [selectedColumns, setSelectedColumns] = useState([]);
@@ -18,6 +19,9 @@ export default function DynamicGrid() {
   const defaultColDef = useMemo(() => ({
     filter: true,
     editable: (params) => Editable && params.colDef.field !== "id",
+    enablePivot: true,
+    enableValue: true,
+    enableRowGroup: true
   }), [columnDefs, Editable]);
 
   useEffect(() => {

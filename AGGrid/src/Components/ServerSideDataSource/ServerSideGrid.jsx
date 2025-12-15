@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState, StrictMode } from "react";
+import React, { useCallback, useMemo, useState,useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { myTheme } from "../../Styles/them";
 
@@ -35,6 +35,14 @@ function createFakeServer(allData) {
 }
 
 const ServerDataGrid = () => {
+    const [Theme,setTheme] = useState(false);
+        useEffect(() => {
+          ThemChange();
+        }, []);
+        function ThemChange() {
+          setTheme(Theme ? false : true);
+          document.body.dataset.agThemeMode = Theme ? "dark" : "light";
+        }
   const [columnDefs, setColumnDefs] = useState([
     { field: "athlete", minWidth: 220 },
     { field: "country", minWidth: 200 },
@@ -85,3 +93,4 @@ const ServerDataGrid = () => {
 };
 
 export default ServerDataGrid;
+

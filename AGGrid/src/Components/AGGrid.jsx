@@ -3,7 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import { myTheme } from "../Styles/them";
 import Available from '../../public/Avalible.jpeg';
 import Low from '../../public/LowStock.png';
-import '../Styles/AGGrid.css';
+
 import { columnDefs, rowData, gridOptions } from './AGGridFeildConfig';
 function AGGrid() {
   const [Theme,setTheme] = useState(false);

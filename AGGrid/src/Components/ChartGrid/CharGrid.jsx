@@ -1,10 +1,16 @@
 import { useFetchJson } from "./useFetchJson";
 import { AgGridReact } from "ag-grid-react";
-import { useMemo, useState, useCallback } from "react";
+import { useMemo, useState, useCallback, useEffect } from "react";
 import { myTheme } from "../../Styles/them";
 const ChartGrid = () => {
-  const containerStyle = useMemo(() => ({ width: "100%", height: "100%" }), []);
-  const gridStyle = useMemo(() => ({ height: "100%", width: "100%" }), []);
+    const [Theme, setTheme] = useState(false);
+    useEffect(() => {
+      ThemChange();
+    }, []);
+    function ThemChange() {
+      setTheme(Theme ? false : true);
+      document.body.dataset.agThemeMode = Theme ? "dark" : "light";
+    }
 
   const [columnDefs, setColumnDefs] = useState([
     // group cell renderer needed for expand / collapse icons
